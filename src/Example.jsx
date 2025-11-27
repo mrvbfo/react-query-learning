@@ -17,6 +17,11 @@ function Example() {
     return <div>Loading...</div>;
   }
 
+//   const mutation = useMutation({
+//     mutationFn: (newTodo) => {
+//       return axios.post('/todos', newTodo)
+//     },
+//   })
 
   return (
     <div>
@@ -30,6 +35,28 @@ function Example() {
       </button>
       <button onClick={() => reset()}>veri reset</button>
     </div>
+
+    // <div>
+    //   {mutation.isPending ? (
+    //     'Adding todo...'
+    //   ) : (
+    //     <>
+    //       {mutation.isError ? (
+    //         <div>An error occurred: {mutation.error.message}</div>
+    //       ) : null}
+
+    //       {mutation.isSuccess ? <div>Todo added!</div> : null}
+
+    //       <button
+    //         onClick={() => {
+    //           mutation.mutate({ id: new Date(), title: 'Do Laundry' })
+    //         }}
+    //       >
+    //         Create Todo
+    //       </button>
+    //     </>
+    //   )}
+    // </div>
   );
 }
 
