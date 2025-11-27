@@ -100,3 +100,73 @@ function UsersList() {
   );
 }
 ```
+
+# Why Use SWR / React Query Instead of useEffect?
+### 1. useEffect was not designed for data fetching
+
+Handling loading, error, retry, caching, abort controllers, and refetching logic must all be implemented manually when using useEffect.
+
+### 2. Eliminates infinite re-render risks
+
+With useEffect, small mistakes in dependency arrays can trigger multiple or even infinite requests.
+SWR and React Query manage fetch lifecycles internally and prevent unnecessary calls.
+
+### 3. Automatic caching
+
+Fetched data is cached and reused, making your UI faster and reducing server load.
+With useEffect, every navigation or re-render triggers a fresh request unless you write custom caching logic.
+
+### 4. Background revalidation
+
+Your UI can display stale data instantly while new data is fetched silently in the background.
+This behavior requires no extra setup in SWR/React Query, but is cumbersome with useEffect.
+
+### 5. Auto refresh on focus / reconnect
+
+When the user returns to the tab or regains network connection, data updates automatically.
+Implementing this manually with useEffect is complex, whereas SWR and React Query do it out-of-the-box.
+
+### 6. Cleaner and more maintainable code
+
+Fetching data with useEffect leads to verbose, repetitive logic.
+SWR and React Query reduce the same functionality to a single declarative hook.
+
+Fetching with useEffect (verbose):
+```js
+useEffect(() => {
+  let isMounted = true;
+  setLoading(true);
+
+  fetch("/api/users")
+    .then((res) => res.json())
+    .then((data) => {
+      if (isMounted) {
+        setUsers(data);
+        setLoading(false);
+      }
+    })
+    .catch((err) => {
+      if (isMounted) {
+        setError(err);
+        setLoading(false);
+      }
+    });
+
+  return () => {
+    isMounted = false;
+  };
+}, []);
+
+```
+
+Fetching with React Query
+
+```js
+const { data, error, isLoading } = useQuery(["users"], fetchUsers);
+
+```
+Fetching with SWR
+
+```js
+const { data, error, isLoading } = useSWR("/api/users", fetcher);
+```
